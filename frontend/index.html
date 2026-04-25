@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PSG Tech — Elective Portal</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- ════════════════════════════════ NAVBAR ════════════════════════════════ -->
+    <nav class="navbar hidden" id="navbar">
+      <div class="navbar__inner">
+        <div class="navbar__brand">PSG<span>Tech</span> Elective Portal</div>
+        <div class="navbar__actions">
+          <span class="navbar__user" id="navbar-user"></span>
+          <button class="theme-toggle" id="theme-toggle" title="Toggle theme">
+            <span class="theme-icon-moon">🌙</span>
+            <span class="theme-icon-sun">☀️</span>
+          </button>
+          <button class="btn btn--ghost btn--sm" id="logout-btn">Logout</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ════════════════════════════════ AUTH PAGE ════════════════════════════════ -->
+    <div class="page active" id="page-auth">
+      <div class="auth-page">
+        <div class="auth-card">
+          <!-- Auth-only theme toggle -->
+          <div style="position: absolute; top: 1rem; right: 1rem">
+            <button class="theme-toggle" id="theme-toggle-auth">
+              <span class="theme-icon-moon">🌙</span>
+              <span class="theme-icon-sun">☀️</span>
+            </button>
+          </div>
+
+          <div class="auth-logo">
+            <div class="auth-logo__emblem">P</div>
+            <div class="auth-logo__title">Elective Portal</div>
+            <div class="auth-logo__subtitle">PSG College of Technology</div>
+          </div>
+
+          <div class="auth-tabs">
+            <button
+              class="auth-tab active"
+              id="tab-login"
+              onclick="switchTab('login')"
+            >
+              Sign In
+            </button>
+            <button
+              class="auth-tab"
+              id="tab-register"
+              onclick="switchTab('register')"
+            >
+              Register
+            </button>
+          </div>
+
+          <!-- ── LOGIN FORM ── -->
+          <div id="form-login">
+            <div class="alert alert--error" id="login-error"></div>
+            <div class="alert alert--success" id="login-success"></div>
+
+            <div class="form-group">
+              <label for="login-email">Email Address</label>
+              <input
+                type="email"
+                id="login-email"
+                placeholder="you@psgtech.ac.in"
+                autocomplete="email"
+              />
+            </div>
+            <div class="form-group">
+              <label for="login-password">Password</label>
+              <input
+                type="password"
+                id="login-password"
+                placeholder="••••••••"
+                autocomplete="current-password"
+              />
+            </div>
+            <button
+              class="btn btn--primary mt-2"
+              id="login-btn"
+              onclick="handleLogin()"
+            >
+              Sign In
+            </button>
+          </div>
+
+          <!-- ── REGISTER FORM ── -->
+          <div id="form-register" class="hidden">
+            <div class="alert alert--error" id="register-error"></div>
+            <div class="alert alert--success" id="register-success"></div>
+            <p class="text-muted mb-2" style="font-size: 0.8rem">
+              Students only. Use your @psgtech.ac.in email.
+            </p>
+
+            <div class="form-group">
+              <label for="reg-rollno">Roll Number</label>
+              <input
+                type="text"
+                id="reg-rollno"
+                placeholder="25MX125"
+                maxlength="7"
+                style="text-transform: uppercase"
+              />
+            </div>
+            <div class="form-group">
+              <label for="reg-name">Full Name</label>
+              <input
+                type="text"
+                id="reg-name"
+                placeholder="Your full name"
+                style="text-transform: uppercase"
+              />
+            </div>
+            <div class="form-group">
+              <label for="reg-email">College Email</label>
+              <input
+                type="email"
+                id="reg-email"
+                placeholder="rollno@psgtech.ac.in"
+              />
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="reg-password">Password</label>
+                <input
+                  type="password"
+                  id="reg-password"
+                  placeholder="Min 6 chars"
+                />
+              </div>
+              <div class="form-group">
+                <label for="reg-confirm">Confirm</label>
+                <input
+                  type="password"
+                  id="reg-confirm"
+                  placeholder="Repeat password"
+                />
+              </div>
+            </div>
+            <button
+              class="btn btn--primary"
+              id="register-btn"
+              onclick="handleRegister()"
+            >
+              Create Account
+            </button>
+            <p
+              class="text-center mt-2"
+              style="font-size: 0.8rem; color: var(--text-muted)"
+            >
+              Already have an account?
+              <a href="#" onclick="switchTab('login')">Sign in</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════ RESET PASSWORD ════════════════════════════════ -->
+    <div class="page" id="page-reset-password">
+      <div class="auth-page">
+        <div class="auth-card">
+          <div class="auth-logo">
+            <div class="auth-logo__emblem">🔑</div>
+            <div class="auth-logo__title">Set New Password</div>
+            <div class="auth-logo__subtitle">
+              This is your first login. Please set a new password.
+            </div>
+          </div>
+          <div class="alert alert--error" id="reset-error"></div>
+          <div class="alert alert--success" id="reset-success"></div>
+          <div class="form-group">
+            <label for="reset-new">New Password</label>
+            <input
+              type="password"
+              id="reset-new"
+              placeholder="Min 6 characters"
+            />
+          </div>
+          <div class="form-group">
+            <label for="reset-confirm">Confirm New Password</label>
+            <input
+              type="password"
+              id="reset-confirm"
+              placeholder="Repeat password"
+            />
+          </div>
+          <button class="btn btn--primary mt-2" onclick="handleResetPassword()">
+            Set Password & Continue
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════ ADMIN DASHBOARD ════════════════════════════════ -->
+    <div class="page" id="page-admin">
+      <div class="dashboard-page">
+        <div class="container">
+          <div class="dashboard-header">
+            <h1 id="admin-welcome">Welcome, Admin</h1>
+            <p>Manage faculty accounts for the Elective Portal.</p>
+          </div>
+
+          <!-- Add Faculty Card -->
+          <div class="card section">
+            <div class="card__header">
+              <div class="card__title">Onboard New Faculty</div>
+            </div>
+
+            <div class="alert alert--error" id="admin-error"></div>
+            <div class="alert alert--success" id="admin-success"></div>
+
+            <div
+              class="form-row"
+              style="
+                grid-template-columns: auto 1fr 1fr auto;
+                align-items: end;
+                gap: 0.75rem;
+              "
+            >
+              <div class="form-group" style="margin: 0">
+                <label for="fac-title">Title</label>
+                <select id="fac-title">
+                  <option value="">Select</option>
+                  <option>Mr</option>
+                  <option>Ms</option>
+                  <option>Dr</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin: 0">
+                <label for="fac-name">Name</label>
+                <input type="text" id="fac-name" placeholder="Faculty name" />
+              </div>
+              <div class="form-group" style="margin: 0">
+                <label for="fac-email">Email (@psgtech.ac.in)</label>
+                <input
+                  type="email"
+                  id="fac-email"
+                  placeholder="faculty@psgtech.ac.in"
+                />
+              </div>
+              <div style="padding-bottom: 0">
+                <button
+                  class="btn btn--primary"
+                  style="width: auto"
+                  onclick="handleAddFaculty()"
+                >
+                  Add Faculty
+                </button>
+              </div>
+            </div>
+            <p class="mt-1" style="font-size: 0.8rem; color: var(--text-muted)">
+              Default password = prefix before '@' in email. Faculty will be
+              prompted to change on first login.
+            </p>
+          </div>
+
+          <!-- Faculty List -->
+          <div class="card section">
+            <div class="card__header">
+              <div class="card__title">Faculty Members</div>
+              <button
+                class="btn btn--ghost btn--sm"
+                onclick="loadFacultyList()"
+              >
+                ↻ Refresh
+              </button>
+            </div>
+            <div id="faculty-table-wrap">
+              <div class="empty-state">
+                <div class="empty-state__icon">👥</div>
+                <p>Loading faculty...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════ FACULTY DASHBOARD ════════════════════════════════ -->
+    <div class="page" id="page-faculty">
+      <div class="dashboard-page">
+        <div class="container">
+          <div class="dashboard-header">
+            <h1 id="faculty-welcome">Welcome</h1>
+            <p>View elective enrollments and search students.</p>
+          </div>
+
+          <!-- Elective Tiles -->
+          <div class="section">
+            <div class="section-title">Elective Enrollments</div>
+            <div class="tiles-grid" id="elective-tiles">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <!-- Search Students -->
+          <div class="card section">
+            <div class="card__header">
+              <div class="card__title">Student Search</div>
+            </div>
+            <div class="flex gap-1" style="gap: 0.75rem; flex-wrap: wrap">
+              <div class="search-wrap" style="flex: 1; min-width: 200px">
+                <span class="search-icon">🔍</span>
+                <input
+                  type="text"
+                  id="student-search-input"
+                  placeholder="Search by name or roll number…"
+                  oninput="debounceSearch()"
+                />
+              </div>
+              <button class="btn btn--secondary" onclick="searchStudents()">
+                Search
+              </button>
+            </div>
+            <div id="search-results" class="mt-2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════ STUDENT – ELECTIVE SELECTION ════════════════════════════════ -->
+    <div class="page" id="page-student-select">
+      <div class="elective-selection">
+        <div class="container" style="max-width: 700px">
+          <div class="dashboard-header">
+            <h1 id="student-welcome-select">Select Your Electives</h1>
+            <p>
+              Choose your subjects carefully. Selections cannot be changed after
+              submission.
+            </p>
+          </div>
+
+          <div class="elective-form-card">
+            <div class="elective-form-header">
+              <h2>Elective Registration</h2>
+              <p>Academic Year 2025–26 | MCA Programme</p>
+            </div>
+            <div class="elective-form-body">
+              <div class="alert alert--error" id="elective-error"></div>
+
+              <!-- Counter -->
+              <div class="selection-counter">
+                <span style="color: var(--text-muted); font-size: 0.8rem"
+                  >Selected from:</span
+                >
+                <span
+                  >Category 1:
+                  <span
+                    class="counter-badge counter-badge--cat1"
+                    id="cat1-count"
+                    >0</span
+                  >/3</span
+                >
+                <span
+                  >Category 2:
+                  <span
+                    class="counter-badge counter-badge--cat2"
+                    id="cat2-count"
+                    >0</span
+                  >/2</span
+                >
+                <span
+                  style="
+                    margin-left: auto;
+                    font-weight: 500;
+                    color: var(--accent);
+                  "
+                  id="total-count"
+                  >Total: 0/3</span
+                >
+              </div>
+
+              <!-- Category 1 -->
+              <div class="elective-section">
+                <div class="elective-section__title">
+                  Category 1 — Electives II, III, IV (min 2 required)
+                </div>
+                <div class="checkbox-grid" id="cat1-checkboxes">
+                  <label class="checkbox-item" id="ci-hci">
+                    <input
+                      type="checkbox"
+                      value="Human Computer Interaction"
+                      onchange="handleElectiveChange()"
+                    />
+                    <span>Human Computer Interaction</span>
+                  </label>
+                  <label class="checkbox-item" id="ci-cn">
+                    <input
+                      type="checkbox"
+                      value="Computer Networks"
+                      onchange="handleElectiveChange()"
+                    />
+                    <span>Computer Networks</span>
+                  </label>
+                  <label class="checkbox-item" id="ci-devops">
+                    <input
+                      type="checkbox"
+                      value="DevOps"
+                      onchange="handleElectiveChange()"
+                    />
+                    <span>DevOps</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Category 2 -->
+              <div class="elective-section">
+                <div class="elective-section__title">
+                  Category 2 — Electives II, III, IV (max 1 allowed)
+                </div>
+                <div class="checkbox-grid" id="cat2-checkboxes">
+                  <label class="checkbox-item" id="ci-dm">
+                    <input
+                      type="checkbox"
+                      value="Data Mining"
+                      onchange="handleElectiveChange()"
+                    />
+                    <span>Data Mining</span>
+                  </label>
+                  <label class="checkbox-item" id="ci-scp">
+                    <input
+                      type="checkbox"
+                      value="Smart Computing using Python"
+                      onchange="handleElectiveChange()"
+                    />
+                    <span>Smart Computing using Python</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Elective V -->
+              <div class="elective-section">
+                <div class="elective-section__title">
+                  Elective V — Choose One
+                </div>
+                <div class="checkbox-grid">
+                  <label class="checkbox-item" id="ci-entre">
+                    <input
+                      type="radio"
+                      name="electiveV"
+                      value="Entrepreneurship"
+                      onchange="handleElectiveChange()"
+                    />
+                    <span>Entrepreneurship</span>
+                  </label>
+                  <label class="checkbox-item" id="ci-pom">
+                    <input
+                      type="radio"
+                      name="electiveV"
+                      value="Principles of Management"
+                      onchange="handleElectiveChange()"
+                    />
+                    <span>Principles of Management</span>
+                  </label>
+                </div>
+              </div>
+
+              <button
+                class="btn btn--primary btn--lg"
+                id="submit-electives-btn"
+                onclick="handleElectiveSubmit()"
+                disabled
+              >
+                Submit Electives
+              </button>
+              <p
+                class="mt-1 text-muted"
+                style="font-size: 0.8rem; text-align: center"
+              >
+                Select exactly 3 subjects from Categories 1 & 2 (min 2 from Cat
+                1) + 1 from Elective V.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════ STUDENT – CONFIRMATION ════════════════════════════════ -->
+    <div class="page" id="page-student-confirm">
+      <div class="elective-selection">
+        <div class="container">
+          <div class="confirmation-card">
+            <div class="confirmation-icon">✅</div>
+            <h2>Electives Confirmed!</h2>
+            <p class="mt-1">
+              Your elective selections have been recorded successfully.
+            </p>
+            <ul class="elective-list-confirm" id="confirm-elective-list"></ul>
+            <div class="divider"></div>
+            <p style="font-size: 0.85rem; color: var(--text-muted)">
+              Contact your faculty coordinator if you need to make changes.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════ MODAL: Elective Students ════════════════════════════════ -->
+    <div class="modal-overlay" id="elective-modal">
+      <div class="modal">
+        <div class="modal__header">
+          <h3 id="modal-elective-name" class="font-display">Students</h3>
+          <button class="modal__close" onclick="closeModal()">✕</button>
+        </div>
+        <div
+          class="flex justify-between items-center mb-2"
+          style="flex-wrap: wrap; gap: 0.5rem"
+        >
+          <span
+            class="text-muted"
+            id="modal-student-count"
+            style="font-size: 0.875rem"
+          ></span>
+          <button
+            class="btn btn--success btn--sm"
+            id="modal-export-btn"
+            onclick="exportElective()"
+          >
+            📥 Export to Excel
+          </button>
+        </div>
+        <div id="modal-student-list"></div>
+      </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/faculty.js"></script>
+    <script src="js/student.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
