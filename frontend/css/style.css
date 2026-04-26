@@ -527,6 +527,40 @@ tbody tr:hover { background: var(--bg-hover); }
   pointer-events: none;
 }
 
+.faculty-list-note {
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+}
+
+.faculty-list-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.student-electives-table-wrap {
+  margin-top: 0.25rem;
+}
+
+.student-electives-table th:last-child,
+.student-electives-table td:last-child {
+  min-width: 340px;
+}
+
+.student-roll {
+  font-family: monospace;
+}
+
+.student-electives-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
 /* ─── Elective Selection Page ─── */
 .elective-selection {
   padding: 2rem 0;
@@ -830,6 +864,8 @@ tbody tr:hover { background: var(--bg-hover); }
   .elective-form-body { padding: 1.25rem; }
   .checkbox-grid { grid-template-columns: 1fr; }
   .navbar__user { display: none; }
+  .student-electives-table th:last-child,
+  .student-electives-table td:last-child { min-width: 280px; }
 }
 
 /* ─── Utility ─── */

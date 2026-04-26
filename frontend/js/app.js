@@ -31,6 +31,7 @@ function routeUser(user) {
     } else {
       showPage('page-faculty');
       loadElectiveTiles();
+      loadStudentElectiveList();
     }
 
   } else if (user.role === 'student') {

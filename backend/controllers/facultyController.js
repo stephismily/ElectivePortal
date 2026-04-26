@@ -13,6 +13,18 @@ const ELECTIVE_NAMES = [
   "Principles of Management",
 ];
 
+const STUDENT_ELECTIVE_FIELDS = "name rollNumber electives electivesSubmitted";
+
+const formatStudentElectiveRow = (student, index) => ({
+  "S.No": index + 1,
+  "Roll Number": student.rollNumber,
+  Name: student.name,
+  "Elective II": student.electives?.electiveII || "",
+  "Elective III": student.electives?.electiveIII || "",
+  "Elective IV": student.electives?.electiveIV || "",
+  "Elective V": student.electives?.electiveV || "",
+});
+
 // POST /faculty/reset-password
 const resetPassword = async (req, res) => {
   try {
@@ -171,6 +183,62 @@ const exportElectiveToExcel = async (req, res) => {
   }
 };
 
+// GET /faculty/student-electives
+const getStudentElectives = async (req, res) => {
+  try {
+    const students = await Student.find({ electivesSubmitted: true })
+      .select(STUDENT_ELECTIVE_FIELDS)
+      .sort({ rollNumber: 1 });
+
+    res.status(200).json({ success: true, students });
+  } catch (error) {
+    console.error("Get student electives error:", error);
+    res.status(500).json({ success: false, message: "Server error." });
+  }
+};
+
+// GET /faculty/export-student-electives
+const exportStudentElectivesToExcel = async (req, res) => {
+  try {
+    const students = await Student.find({ electivesSubmitted: true })
+      .select(STUDENT_ELECTIVE_FIELDS)
+      .sort({ rollNumber: 1 });
+
+    const data = students.map(formatStudentElectiveRow);
+
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Student Electives");
+
+    worksheet["!cols"] = [
+      { wch: 6 },
+      { wch: 15 },
+      { wch: 28 },
+      { wch: 28 },
+      { wch: 28 },
+      { wch: 28 },
+      { wch: 28 },
+    ];
+
+    const buffer = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" });
+
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="student_elective_list.xlsx"',
+    );
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    );
+    res.send(buffer);
+  } catch (error) {
+    console.error("Export student electives error:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Server error during export." });
+  }
+};
+
 // GET /faculty/search-student?query=<roll or name>
 const searchStudent = async (req, res) => {
   try {
@@ -190,7 +258,9 @@ const searchStudent = async (req, res) => {
         { rollNumber: { $regex: q, $options: "i" } },
         { name: { $regex: q, $options: "i" } },
       ],
-    }).select("-password");
+    })
+      .select(STUDENT_ELECTIVE_FIELDS)
+      .sort({ rollNumber: 1 });
 
     res.status(200).json({ success: true, students });
   } catch (error) {
@@ -206,5 +276,7 @@ module.exports = {
   getElectives,
   getStudentsByElective,
   exportElectiveToExcel,
+  getStudentElectives,
+  exportStudentElectivesToExcel,
   searchStudent,
 };

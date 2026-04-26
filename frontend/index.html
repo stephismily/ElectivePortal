@@ -302,7 +302,19 @@
           <!-- Search Students -->
           <div class="card section">
             <div class="card__header">
-              <div class="card__title">Student Search</div>
+              <div>
+                <div class="card__title">Student Elective List</div>
+                <p class="faculty-list-note">
+                  All submitted elective choices are shown below and sorted by roll number.
+                </p>
+              </div>
+              <button
+                class="btn btn--success btn--sm"
+                id="student-electives-export-btn"
+                onclick="exportStudentElectives()"
+              >
+                Export to Excel
+              </button>
             </div>
             <div class="flex gap-1" style="gap: 0.75rem; flex-wrap: wrap">
               <div class="search-wrap" style="flex: 1; min-width: 200px">
@@ -310,7 +322,7 @@
                 <input
                   type="text"
                   id="student-search-input"
-                  placeholder="Search by name or roll number…"
+                  placeholder="Search by name or roll number..."
                   oninput="debounceSearch()"
                 />
               </div>
@@ -318,6 +330,7 @@
                 Search
               </button>
             </div>
+            <div id="student-list-summary" class="mt-2 faculty-list-summary"></div>
             <div id="search-results" class="mt-2"></div>
           </div>
         </div>
