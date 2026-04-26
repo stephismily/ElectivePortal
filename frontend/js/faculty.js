@@ -2,25 +2,12 @@ let currentElective = null;
 let searchDebounceTimer = null;
 let allStudentElectives = [];
 
-function getElectiveBadgeMarkup(electives = {}) {
-  const entries = [
-    ["II", electives.electiveII],
-    ["III", electives.electiveIII],
-    ["IV", electives.electiveIV],
-    ["V", electives.electiveV],
-  ].filter(([, value]) => value);
-
-  if (!entries.length) {
-    return '<span style="font-size:0.8rem;color:var(--text-muted);font-style:italic;">Electives not yet submitted</span>';
+function getElectiveCellValue(value) {
+  if (!value) {
+    return '<span class="student-elective-empty">-</span>';
   }
 
-  return `
-    <div class="student-electives-tags">
-      ${entries
-        .map(([label, value]) => `<span class="tag">${label}: ${escapeHtml(value)}</span>`)
-        .join("")}
-    </div>
-  `;
+  return escapeHtml(value);
 }
 
 function renderStudentElectiveList(students, query = "") {
@@ -52,7 +39,10 @@ function renderStudentElectiveList(students, query = "") {
             <th>#</th>
             <th>Roll Number</th>
             <th>Name</th>
-            <th>Chosen Electives</th>
+            <th>Elective II</th>
+            <th>Elective III</th>
+            <th>Elective IV</th>
+            <th>Elective V</th>
           </tr>
         </thead>
         <tbody>
@@ -63,7 +53,10 @@ function renderStudentElectiveList(students, query = "") {
                   <td>${index + 1}</td>
                   <td class="student-roll">${escapeHtml(student.rollNumber)}</td>
                   <td>${escapeHtml(student.name)}</td>
-                  <td>${getElectiveBadgeMarkup(student.electives)}</td>
+                  <td>${getElectiveCellValue(student.electives?.electiveII)}</td>
+                  <td>${getElectiveCellValue(student.electives?.electiveIII)}</td>
+                  <td>${getElectiveCellValue(student.electives?.electiveIV)}</td>
+                  <td>${getElectiveCellValue(student.electives?.electiveV)}</td>
                 </tr>
               `,
             )

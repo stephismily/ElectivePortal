@@ -546,19 +546,18 @@ tbody tr:hover { background: var(--bg-hover); }
   margin-top: 0.25rem;
 }
 
-.student-electives-table th:last-child,
-.student-electives-table td:last-child {
-  min-width: 340px;
+.student-electives-table th:nth-child(n + 4),
+.student-electives-table td:nth-child(n + 4) {
+  min-width: 180px;
 }
 
 .student-roll {
   font-family: monospace;
 }
 
-.student-electives-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
+.student-elective-empty {
+  color: var(--text-light);
+  font-style: italic;
 }
 
 /* ─── Elective Selection Page ─── */
@@ -864,8 +863,8 @@ tbody tr:hover { background: var(--bg-hover); }
   .elective-form-body { padding: 1.25rem; }
   .checkbox-grid { grid-template-columns: 1fr; }
   .navbar__user { display: none; }
-  .student-electives-table th:last-child,
-  .student-electives-table td:last-child { min-width: 280px; }
+  .student-electives-table th:nth-child(n + 4),
+  .student-electives-table td:nth-child(n + 4) { min-width: 160px; }
 }
 
 /* ─── Utility ─── */
